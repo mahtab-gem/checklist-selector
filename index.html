@@ -1,0 +1,208 @@
+<!doctype html>
+<!--
+Diese HTML-Datei dient dem Zugriff auf die nutzerzentrierten Checklisten.
+Nach Wahl der Nutzergruppe, werden die Prozessphasen der Dienstleistersteuerung eingeblendet.
+Ein Klick auf die jeweilige Phase triggert die Weiterleitung zu der entsprechenden Checkliste in ELO.
+-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Nutzerzentrierte Checklisten</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+      /* Hier können die ELO-Links der Checklisten angepasst werden. */
+      const eloLinks = {
+        pl: {
+          phase1: "https://www.google.de/search?q=a",
+          phase2: "https://www.google.de/search?q=b",
+          phase3: "https://www.google.de/search?q=c",
+          phase4: "https://www.google.de/search?q=d"
+        },
+        recht: {
+          phase1: "https://www.google.de/search?q=a",
+          phase2: "https://www.google.de/search?q=b",
+          phase3: "https://www.google.de/search?q=c",
+          phase4: "https://www.google.de/search?q=d"
+        },
+        fce: {
+          phase1: "https://www.google.de/search?q=a",
+          phase2: "https://www.google.de/search?q=b",
+          phase3: "https://www.google.de/search?q=c",
+          phase4: "https://www.google.de/search?q=d"
+        },
+        qm: {
+          phase1: "https://www.google.de/search?q=a",
+          phase2: "https://www.google.de/search?q=b",
+          phase3: "https://www.google.de/search?q=c",
+          phase4: "https://www.google.de/search?q=d"
+        },
+        pruef: {
+          phase1: "https://www.google.de/search?q=a",
+          phase2: "https://www.google.de/search?q=b",
+          phase3: "https://www.google.de/search?q=c",
+          phase4: ""
+        }
+      }
+
+      /* Funktion für die Auswahl der Nutzergruppe */
+      let selectedUserGroup = ""
+      function selectUserGroup(userGroup) {
+        document.querySelectorAll(".selected").forEach(e => e.className = "")
+        document.getElementById(userGroup).className = "selected"
+        selectedUserGroup = userGroup
+        document.getElementById("phaseWrapper").style.visibility = "visible"
+        setPhaseUnavailability()
+      }
+      /* Funktion für die Auswahl der Phase */
+      function selectPhase(phase) {
+        const link = eloLinks[selectedUserGroup][phase]
+        if (link) window.open(link)
+      }
+
+      /* Funktion für die Markierung der nicht verfügbaren Phasen */
+      function setPhaseUnavailability() {
+        for (let p of ["phase1", "phase2", "phase3", "phase4"]) {
+          const link = eloLinks[selectedUserGroup][p]
+          if (!link) {
+            document.getElementById(p).className = "unavailable"
+            document.getElementById(p).title = "In dieser Phase gibt für die ausgewählte Nutzergruppe nichts zu tun."
+          } else {
+            document.getElementById(p).className = ""
+            document.getElementById(p).title = ""
+          }
+        }
+      }
+    </script>
+    <style>
+        body {
+            font-family: "Helvetica", sans-serif;
+        }
+
+        h1 {
+            font-size: 19pt;
+        }
+
+        h1:nth-of-type(1) {
+            padding-bottom: 40px;
+        }
+
+        h3 {
+            font-weight: normal;
+        }
+
+        /* Nutzergruppen Toggles */
+        #nutzergruppen > div {
+            font-size: 12pt;
+            border: 1px black solid;
+            width: 170px;
+            min-width: 170px;
+            height: 70px;
+            line-height: 70px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #nutzergruppen {
+            display: flex;
+            gap: 40px;
+            padding-bottom: 100px;
+        }
+
+        #pl {
+            background-color: #F8CECC;
+            border-color: #B85450 !important;
+        }
+
+        #recht {
+            background-color: #dae8fc;
+            border-color: #6C8EBF !important;
+        }
+
+        #fce {
+            background-color: #e1d5e7;
+            border-color: #9673a6 !important;
+        }
+
+        #qm {
+            background-color: #D5E8D4;
+            border-color: #82B366 !important;
+        }
+
+        #pruef {
+            background-color: #FFF2CC;
+            border-color: #D6B656 !important;
+        }
+
+        .selected {
+            /* Diese Klasse ist für das Highlighten der ausgewählten Nutzergruppe. */
+            border-width: 2px !important;
+            font-weight: bold;
+        }
+
+        /* Phasen Schaltflächen */
+        #phase > div {
+            font-size: 12pt;
+            border: 1px black solid;
+            border-radius: 10px; /* für abgerundete ecken*/
+            width: 240px;
+            min-width: 240px;
+            height: 90px;
+            line-height: 90px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        p {
+            /* Zentrierung der Phasennamen: https://blog.hubspot.com/website/center-div-css (siehe "Using the Line-Height Property")*/
+            line-height: normal;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        #phase {
+            display: flex;
+            gap: 40px;
+            padding-top: 50px;
+        }
+
+        .unavailable {
+            /* Diese Klasse ist für die Deaktivierung der Phasen, für die es keine Checkliste gibt. */
+            background-color: #F5F5F5;
+            border-color: #666666 !important;
+            color: #666666;
+            cursor: not-allowed !important;
+        }
+
+        #phaseWrapper {
+            /* Die Phasen werden erst nach Auswahl der Nutzergruppe eingeblendet. */
+            visibility: hidden;
+        }
+    </style>
+</head>
+
+<body>
+<h1>Wähle deine Nutzergruppe:</h1>
+
+<div id="nutzergruppen">
+    <div id="pl" onclick="selectUserGroup('pl')">PL / PMO / SDM</div>
+    <div id="recht" onclick="selectUserGroup('recht')">Recht</div>
+    <div id="fce" onclick="selectUserGroup('fce')">FCE</div>
+    <div id="qm" onclick="selectUserGroup('qm')">QM</div>
+    <div id="pruef" onclick="selectUserGroup('pruef')">Prüfverantwortlicher</div>
+</div>
+
+<div id="phaseWrapper">
+    <h1>Wähle die Phase, in der du dich gerade befindest:</h1>
+    <h3>Sobald du deine Phase ausgewählt hast, wirst du zu der korrekten Checkliste in ELO weitergeleitet.</h3>
+
+    <div id="phase">
+        <div id="phase1" onclick="selectPhase('phase1')"><p><b>Phase 1:</b><br>Vorbereitung (Teil 1) &
+            Beauftragung/Vergabe</p></div>
+        <div id="phase2" onclick="selectPhase('phase2')"><p><b>Phase 2:</b><br>Vorbereitung (Teil 2) & Kickoff</p></div>
+        <div id="phase3" onclick="selectPhase('phase3')"><p><b>Phase 3:</b><br>Umsetzung & Steuerung</p></div>
+        <div id="phase4" onclick="selectPhase('phase4')"><p><b>Phase 4:</b><br>Vertragsbeendigung</p></div>
+    </div>
+</div>
+</body>
+</html>
+
