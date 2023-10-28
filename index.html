@@ -47,9 +47,12 @@ Ein Klick auf die jeweilige Phase triggert die Weiterleitung zu der entsprechend
       /* Funktion für die Auswahl der Nutzergruppe */
       let selectedUserGroup = ""
       function selectUserGroup(userGroup) {
+        // https://stackoverflow.com/questions/507138/how-to-add-a-class-to-a-given-element
+        // https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll
         document.querySelectorAll(".selected").forEach(e => e.className = "")
         document.getElementById(userGroup).className = "selected"
         selectedUserGroup = userGroup
+        // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style
         document.getElementById("phaseWrapper").style.visibility = "visible"
         setPhaseUnavailability()
       }
@@ -65,6 +68,7 @@ Ein Klick auf die jeweilige Phase triggert die Weiterleitung zu der entsprechend
           const link = eloLinks[selectedUserGroup][p]
           if (!link) {
             document.getElementById(p).className = "unavailable"
+            // Tooltip: https://www.w3schools.com/tags/att_global_title.asp
             document.getElementById(p).title = "In dieser Phase gibt für die ausgewählte Nutzergruppe nichts zu tun."
           } else {
             document.getElementById(p).className = ""
@@ -184,6 +188,7 @@ Ein Klick auf die jeweilige Phase triggert die Weiterleitung zu der entsprechend
 <h1>Wähle deine Nutzergruppe:</h1>
 
 <div id="nutzergruppen">
+    <!--https://stackoverflow.com/questions/12945825/adding-an-onclick-event-to-a-div-element-->
     <div id="pl" onclick="selectUserGroup('pl')">PL / PMO / SDM</div>
     <div id="recht" onclick="selectUserGroup('recht')">Recht</div>
     <div id="fce" onclick="selectUserGroup('fce')">FCE</div>
